@@ -1,111 +1,56 @@
 import streamlit as st
 
-from streamlit_metrics import metric, metric_row
-from streamlit_ace import st_ace
+def main():
+    st.title("Digital Twin Add-on Selector for SMEs")
+    
+    # Step 1: Business Size
+    size = st.selectbox("Select your business size:", ["Small (1-10 employees)", "Medium (11-100 employees)", "Large (100+ employees)"])
+    
+    # Step 2: Maintenance Priorities
+    reliability = st.checkbox("Reliability is important (Avoid failures)")
+    availability = st.checkbox("Availability is important (Maximize uptime)")
+    maintainability = st.checkbox("Maintainability is important (Ease of repairs)")
+    sustainability = st.checkbox("Sustainability is important (Eco-friendly maintenance)")
+    
+    # Step 3: Technical Considerations
+    cloud_required = st.radio("Do you require a cloud-based solution?", ["Yes", "No"])
+    security_level = st.radio("How critical is data privacy & security?", ["Low", "Medium", "High"])
+    scalability = st.radio("How scalable should your system be?", ["Low", "Medium", "High"])
+    
+    # Step 4: Budget & Maintenance Type
+    budget = st.radio("Budget for maintenance:", ["Low", "Medium", "High"])
+    maintenance_type = st.selectbox("Type of maintenance strategy:", ["Reactive", "Preventive", "Predictive", "Prescriptive"])
+    
+    # Step 5: Decision Output
+    st.subheader("Recommended Add-ons Based on Your Selection:")
+    recommendations = []
+    
+    if reliability:
+        recommendations.append("Predictive Maintenance, Advanced IoT Integration")
+    if availability:
+        recommendations.append("Big Data Processing, Automated Workflows")
+    if maintainability:
+        recommendations.append("AI-driven Data Analytics, Preventive Maintenance")
+    if sustainability:
+        recommendations.append("Carbon Footprint Tracking, Eco-Friendly Optimization")
+    if cloud_required == "Yes":
+        recommendations.append("Hybrid Cloud Deployment, API for Future Add-ons")
+    if security_level == "High":
+        recommendations.append("Advanced Cybersecurity, Blockchain for Secure Data Logs")
+    if scalability == "High":
+        recommendations.append("Scalable AI & IoT Infrastructure, Modular System Design")
+    if budget == "Low":
+        recommendations.append("Start with Core System, Add Predictive Maintenance if feasible")
+    if maintenance_type == "Reactive":
+        recommendations.append("Core System Only")
+    elif maintenance_type in ["Preventive", "Predictive", "Prescriptive"]:
+        recommendations.append("IoT, AI-driven Analytics, Advanced Decision Support")
+    
+    if recommendations:
+        for rec in recommendations:
+            st.write(f"- {rec}")
+    else:
+        st.write("Based on your inputs, the core system is sufficient for your needs.")
 
-import pandas as pd
-import numpy as np
-import altair as alt
-import cufflinks as cf
-
-
-st.set_page_config(
-    page_title="Streamlit Sandbox",
-    page_icon=":memo:",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
-st.sidebar.title(":memo: Editor settings")
-
-st.title("Streamlit sandbox")
-st.write("Play with Streamlit live in the browser!")
-
-THEMES = [
-    "ambiance",
-    "chaos",
-    "chrome",
-    "clouds",
-    "clouds_midnight",
-    "cobalt",
-    "crimson_editor",
-    "dawn",
-    "dracula",
-    "dreamweaver",
-    "eclipse",
-    "github",
-    "gob",
-    "gruvbox",
-    "idle_fingers",
-    "iplastic",
-    "katzenmilch",
-    "kr_theme",
-    "kuroir",
-    "merbivore",
-    "merbivore_soft",
-    "mono_industrial",
-    "monokai",
-    "nord_dark",
-    "pastel_on_dark",
-    "solarized_dark",
-    "solarized_light",
-    "sqlserver",
-    "terminal",
-    "textmate",
-    "tomorrow",
-    "tomorrow_night",
-    "tomorrow_night_blue",
-    "tomorrow_night_bright",
-    "tomorrow_night_eighties",
-    "twilight",
-    "vibrant_ink",
-    "xcode",
-]
-
-KEYBINDINGS = ["emacs", "sublime", "vim", "vscode"]
-
-editor, app = st.tabs(["Editor", "App"])
-
-INITIAL_CODE = """
-table_data = {'Column 1': [1, 2], 'Column 2': [3, 4]}
-st.write(pd.DataFrame(data=table_data))
-"""
-
-with editor:
-    code = st_ace(
-        value=INITIAL_CODE,
-        language="python",
-        placeholder="st.header('Hello world!')",
-        theme=st.sidebar.selectbox("Theme", options=THEMES, index=26),
-        keybinding=st.sidebar.selectbox(
-            "Keybinding mode", options=KEYBINDINGS, index=3
-        ),
-        font_size=st.sidebar.slider("Font size", 5, 24, 14),
-        tab_size=st.sidebar.slider("Tab size", 1, 8, 4),
-        wrap=st.sidebar.checkbox("Wrap lines", value=False),
-        show_gutter=True,
-        show_print_margin=True,
-        auto_update=False,
-        readonly=False,
-        key="ace-editor",
-    )
-    st.write("Hit `CTRL+ENTER` to refresh")
-    st.write("*Remember to save your code separately!*")
-
-with app:
-    exec(code)
-
-with st.sidebar:
-    libraries_available = st.expander("Available Libraries")
-    with libraries_available:
-        st.write(
-            """
-        * Pandas (pd)
-        * Numpy (np)
-        * Altair (alt)
-        * Bokeh
-        * Plotly
-        * Cufflinks (cf)
-
-        [Need something else?](https://github.com/samdobson/streamlit-sandbox/issues/new)
-        """
-        )
+if __name__ == "__main__":
+    main()
